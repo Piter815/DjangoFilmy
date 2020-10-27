@@ -3,10 +3,17 @@
 {% block content %}
     <h1>Welcome to Django Movies</h1>
     <ul>
-        {% for movie in movies %}
-            <li>
-                {{ movie.title }} ({{ movie.released.year }}) by {{movie.director}}, genre: {{movie.genre.name}}
-            </li>
+        {% for movie in movie_list %}
+
+                <li>
+                     {{ movie.title }} ({{ movie.released.year }}) by {{movie.director}}, genre: {{movie.genre.name}}, age limit:
+                    {% if movie.genre.age_limit == 1 %}
+                        Teen
+                    {% elif movie.genre.age_limit == 0 %}
+                        Kids
+                    {% endif %}
+                </li>
+
         {% endfor %}
     </ul>
 {% endblock %}
