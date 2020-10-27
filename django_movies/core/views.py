@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.generic import ListView
+from django.views.generic import ListView, FormView
 from core.models import Movies
+from core.forms import MovieForm
 
 
 def hello(request):
@@ -22,6 +23,11 @@ class MovieView(ListView):
         # Add in a QuerySet of all the books
         context['movie_list'] = Movies.objects.filter(genre__age_limit__lte=1)
         return context
+
+class MovieCreateView(FormView):
+    template_name = 'forms.html'
+    form_class = MovieForm
+
 
 # def movies(request):
 #     return render(
