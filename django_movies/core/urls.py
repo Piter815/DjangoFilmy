@@ -13,12 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
-from core.views import IndexView
 
+from django.urls import path
+from core.views import MovieDetailView, MovieView, MovieCreateView, MovieUpdateView, MovieDeleteView
+
+app_name = 'core'
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("",IndexView.as_view(), name='index'),
-    path("core/", include('core.urls', namespace='core')),
-]
+    path("movie/create", MovieCreateView.as_view(), name="movie_create"),
+    path("movie/update/<pk>", MovieUpdateView.as_view(), name="movie_update"),
+    path("movie/delete/<pk>", MovieDeleteView.as_view(), name="movie_delete"),
+    path("movie/list", MovieView.as_view(), name='index'),
+    path("movie/detail/<pk>", MovieDetailView.as_view(), name="movie_update")
+  ]

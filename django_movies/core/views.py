@@ -4,7 +4,7 @@ from django.core.checks import messages
 from django.shortcuts import render
 from django.http import HttpResponse, request
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, FormView, CreateView, UpdateView, DeleteView, DetailView
 from core.models import Movies
 from core.forms import MovieForm
 
@@ -16,14 +16,20 @@ def hello(request):
         context={'adjectives':['beautiful','cruel','wonderful']},
     )
 
-class MovieListView(ListView):
-    template_name = 'movies.html'
+class MovieView(ListView):
+    template_name = 'movie_list.html'
     model = Movies
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['movie_list'] = Movies.objects.filter(genre__age_limit__lte=1)
         return context
+
+class MovieDetailView(DetailView):
+    template_name = 'movies_detail.html'
+    model = Movies
+
+
 
 
 class MovieCreateView(CreateView):
@@ -79,5 +85,5 @@ class MovieDeleteView(DeleteView):
 #     )
 
 
-class IndexView(MovieListView):
+class IndexView(MovieView):
     template_name = 'index.html'
