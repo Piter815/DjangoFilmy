@@ -9,6 +9,11 @@ def capitalized_validator(value):
         raise ValidationError('Value must be capitalized!')
 
 
+def new_validator(value):
+    if value == "Funny":
+        raise ValidationError('Its not that funny...')
+
+
 class PastMonthField(forms.DateField):
     def validate(self, value):
         super().validate(value)
@@ -21,11 +26,10 @@ class PastMonthField(forms.DateField):
 
 
 class MovieForm(forms.ModelForm):
-
     class Meta:
         model = Movies
         fields = '__all__'
 
-    title = forms.CharField(validators=[capitalized_validator])
+    title = forms.CharField(validators=[capitalized_validator, new_validator])
     rating = forms.IntegerField(min_value=1, max_value=10)
     released = PastMonthField()
