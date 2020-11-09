@@ -23,5 +23,5 @@ urlpatterns = [
     path("movie/update/<pk>", MovieUpdateView.as_view(), name="movie_update"),
     path("movie/delete/<pk>", MovieDeleteView.as_view(), name="movie_delete"),
     path("movie/list", MovieView.as_view(), name='index'),
-    path("movie/detail/<pk>", MovieDetailView.as_view(), name="movie_update")
+    path("movie/detail/<pk>", MovieDetailView.as_view(), name="movie_detail")
   ]

@@ -4,10 +4,10 @@
 {% load movie_extras %}
 
 {% block content %}
-  {{ movie|attr_as_p:'title' }}
-  {{ movie|attr_as_p:'released' }}
-  {{ movie|attr_as_p:'genre' }}
-  {{ movie|attr_as_p:'rating' }}
-  {{ movie|attr_as_p:'description' }}
+  {{ movies|attr_as_p:'title' }}
+  {{ movies|attr_as_p:'released' }}
+  {{ movies|attr_as_p:'genre' }}
+  {{ movies|attr_as_p:'rating' }}
+  {{ movies|attr_as_p:'description' }}
 
 {% endblock %}

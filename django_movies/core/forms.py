@@ -1,3 +1,5 @@
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Column, Row, Submit
 from django import forms
 from datetime import date
 from core.models import Genre, Movies
@@ -33,3 +35,16 @@ class MovieForm(forms.ModelForm):
     title = forms.CharField(validators=[capitalized_validator, new_validator])
     rating = forms.IntegerField(min_value=1, max_value=10)
     released = PastMonthField()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            'title',
+            Row(Column('genre'), Column('rating'), Column('released')),
+            'director',
+            'description',
+            'country',
+            Submit('submit','Submit'),
+
+        )
