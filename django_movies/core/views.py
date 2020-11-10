@@ -1,6 +1,6 @@
 from concurrent.futures._base import LOGGER
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.core.checks import messages
 from django.shortcuts import render
 from django.http import HttpResponse, request
@@ -9,6 +9,10 @@ from django.views.generic import ListView, FormView, CreateView, UpdateView, Del
 from core.models import Movies
 from core.forms import MovieForm
 
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
 
 
 def hello(request):
@@ -53,7 +57,7 @@ class MovieCreateView(LoginRequiredMixin, CreateView):
     #     form.save()
 
 
-class MovieUpdateView(LoginRequiredMixin, UpdateView):
+class MovieUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     title = 'Add Movie'
     model = Movies
     template_name = 'forms.html'
@@ -69,7 +73,7 @@ class MovieUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class MovieDeleteView(LoginRequiredMixin, DeleteView):
+class MovieDeleteView(LoginRequiredMixin, StaffRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Movies
     template_name = 'movies_confirm_delete.html'
     # form_class = MovieForm
@@ -85,3 +89,4 @@ class MovieDeleteView(LoginRequiredMixin, DeleteView):
 #         template_name='movies.html',
 #         context={'movies': Movies.objects.all()},
 #     )
+

@@ -19,8 +19,8 @@ from accounts.models import Profile
 class SubmittableForm(Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper
-        self.helper.layout = Layout(*self.files, Submit('submit', 'Submit'))
+        self.helper = FormHelper()
+        self.helper.layout = Layout(*self.fields, Submit('submit', 'Submit'))
 
 class SubmittableAuthenticationForm(SubmittableForm, AuthenticationForm):
     pass
@@ -28,7 +28,22 @@ class SubmittableAuthenticationForm(SubmittableForm, AuthenticationForm):
 class SubmittablePasswordchangeForm(SubmittableForm,PasswordChangeForm):
     pass
 
+class SignUpForm(SubmittableForm, UserCreationForm):
+    history = CharField(
+        label='Tell me more about yourself',
+        widget=Textarea,
+        min_length=20,
+    )
 
+    class Meta(UserCreationForm.Meta):
+        fields = ['username', 'first_name']
+
+        def save(self, commit=True, *args, **kwargs):
+            user = super().save(commit)
+            history = self.cleaned_data['history']
+            profile = Profile(history=history, user=user)
+            profile.save()
+            return user
 
 # class MovieForm(forms.ModelForm):
 #     class Meta:
